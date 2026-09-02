@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% from "_macros.html" import product_card with context %}
+{% block title %}Wishlist | Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero wishlist-hero"><div class="shell"><span class="kicker light-kicker">SAVED FAVORITES</span><h1>Your Wishlist</h1><p>Keep products you love in one place and move them to your cart whenever you are ready.</p></div></section>
+<section class="section"><div class="shell">{% if products %}<div class="product-grid product-grid-3">{% for p in products %}{{ product_card(p) }}{% endfor %}</div>{% else %}<div class="empty-state"><div class="empty-symbol">&hearts;</div><h2>No saved products yet</h2><p>Tap the heart on any product to save it here.</p><a class="btn btn-primary" href="{{ url_for('products') }}">Explore products</a></div>{% endif %}</div></section>
+{% endblock %}

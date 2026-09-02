@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700">
+<defs>
+ <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2563eb"/><stop offset="100%" stop-color="#111827"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-opacity=".22"/></filter>
+</defs>
+<rect width="900" height="700" fill="#f8fafc"/>
+<circle cx="120" cy="110" r="120" fill="#2563eb" opacity=".10"/><circle cx="790" cy="610" r="190" fill="#2563eb" opacity=".10"/>
+<rect x="90" y="85" width="720" height="530" rx="55" fill="url(#g)" filter="url(#shadow)"/>
+<circle cx="450" cy="320" r="165" fill="white" opacity=".13"/>
+<text x="450" y="365" text-anchor="middle" font-family="Segoe UI,Arial" font-size="150">👔</text>
+<rect x="165" y="505" width="570" height="1" fill="white" opacity=".35"/>
+<text x="450" y="555" text-anchor="middle" font-family="Segoe UI,Arial" font-size="28" font-weight="700" fill="white">Classic Oxford Shirt</text>
+<text x="450" y="592" text-anchor="middle" font-family="Segoe UI,Arial" font-size="19" fill="#dbeafe">Men&#x27;s Shirts</text>
+</svg>

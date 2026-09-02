@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}AI Shopping Advisor | Smart Shop AI{% endblock %}
+{% block content %}
+<style>
+.ai-advisor-page{background:linear-gradient(180deg,#f7f4ff 0%,#fff 48%);padding-bottom:70px}
+.ai-advisor-hero{padding:72px 0 36px}
+.ai-advisor-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:stretch}
+.ai-kicker{display:inline-flex;padding:8px 13px;border-radius:999px;background:rgba(104,76,255,.12);font-weight:700;letter-spacing:.08em}
+.ai-advisor-hero h1{font-size:clamp(38px,5vw,66px);line-height:1.02;margin:18px 0}
+.ai-advisor-hero h1 span{background:linear-gradient(90deg,#6948ff,#b548ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ai-advisor-hero p{font-size:18px;max-width:650px;line-height:1.7}
+.ai-prompt-box{margin-top:28px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(40,20,90,.10)}
+.ai-prompt-box textarea{width:100%;border:0;outline:0;resize:vertical;min-height:76px;font:inherit;background:transparent}
+.ai-prompt-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.ai-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ai-suggestions button{border:1px solid rgba(0,0,0,.1);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer}
+.ai-brain-card{border-radius:30px;padding:30px;background:linear-gradient(145deg,#171326,#31205a);color:#fff;min-height:360px;box-shadow:0 25px 70px rgba(44,25,85,.22);position:relative;overflow:hidden}
+.ai-orb{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,rgba(188,117,255,.55) 20%,rgba(104,72,255,.12) 62%,transparent 70%);margin:15px auto 25px;animation:aiPulse 3s ease-in-out infinite}
+@keyframes aiPulse{50%{transform:scale(1.08);filter:brightness(1.15)}}
+.ai-brain-card h2{text-align:center;margin:0 0 10px}
+.ai-brain-card p{text-align:center;color:rgba(255,255,255,.78);line-height:1.6}
+.ai-result{margin-top:24px;display:none;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:26px;padding:26px;box-shadow:0 16px 45px rgba(0,0,0,.07)}
+.ai-result.show{display:block;animation:aiReveal .45s ease}.ai-result.refusal{border:1px solid #f0b8b8;background:#fffafa}.ai-result.refusal .ai-badge{background:#ffe4e4;color:#9a2222}
+@keyframes aiReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.ai-result-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.ai-result-head h2{margin:4px 0 0}
+.ai-badge{padding:7px 10px;border-radius:999px;background:#eee8ff;font-weight:700;white-space:nowrap}
+.ai-product-results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.ai-product-mini{border:1px solid rgba(0,0,0,.08);border-radius:18px;padding:16px;transition:.25s}
+.ai-product-mini:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08)}
+.ai-product-mini h3{font-size:16px;margin:8px 0}
+.ai-product-mini .ai-score{font-weight:800}
+.ai-explain{margin-top:16px;padding:15px;border-radius:16px;background:#f7f5fb;line-height:1.6}
+.ai-chat-section{padding-top:35px}
+@media(max-width:900px){.ai-advisor-grid{grid-template-columns:1fr}.ai-product-results{grid-template-columns:1fr}}
+</style>
+
+<div class="ai-advisor-page">
+<section class="ai-advisor-hero">
+  <div class="shell ai-advisor-grid">
+    <div>
+      <span class="ai-kicker">✦ AI SHOPPING ADVISOR</span>
+      <h1>Don't search harder.<br><span>Shop smarter.</span></h1>
+      <p>Tell SmartShop AI what you need in your own words. It checks the <b>live SmartShop catalogue</b>, then recommends only products that actually exist and are in stock. If you ask for something we do not sell, the AI will tell you instead of inventing an answer.</p>
+      <div class="ai-prompt-box">
+        <textarea id="advisorInput" placeholder="Example: Show me the best shoes under $80, or ask for a product we don't sell to see how the AI refuses it."></textarea>
+        <div class="ai-prompt-actions">
+          <span>🔒 Catalogue-grounded • No invented products</span>
+          <button class="btn btn-primary" id="advisorBtn" type="button">✨ Find My Match</button>
+        </div>
+        <div class="ai-suggestions">
+          {% for category in (categories or [])[:6] %}
+          <button type="button" data-advisor="Show me the best {{ category }}">Best {{ category }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="ai-result" id="advisorResult">
+        <div class="ai-result-head"><div><span class="ai-kicker">AI DECISION</span><h2 id="advisorAnswer"></h2></div><span class="ai-badge">Catalogue Grounded</span></div>
+        <div class="ai-product-results" id="advisorProducts"></div>
+        <div class="ai-explain"><b>How SmartShop AI decides:</b> affordability + customer rating + sales demand + current stock. This keeps the recommendation grounded in your actual catalogue.</div>
+      </div>
+    </div>
+    <div class="ai-brain-card">
+      <div class="ai-orb"></div>
+      <h2>Your personal shopping brain</h2>
+      <p>Describe a need, not a product name. SmartShop AI turns your goal into a catalogue recommendation and gives you a reason for the choice.</p>
+      <p><b>Grounding rule:</b><br>If the catalogue has it, I can help you choose it. If the catalogue does not have it, I will say <b>not available</b> — no made-up products, prices or stock.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section ai-chat-section">
+  <div class="shell">
+    <div class="center-head">
+      <span class="kicker">SMART SUPPORT + MEMORY</span>
+      <h2>Ask the AI anything about your shop</h2>
+      <p>Your existing account-based chat history remains available below. The assistant now uses the real catalogue instead of only fixed keyword replies.</p>
+    </div>
+    <div class="chat-card" style="max-width:900px;margin:0 auto;">
+      <div class="chat-head"><span class="support-avatar">AI</span><div><b>SmartShop AI</b><small>Catalogue-grounded shopping assistant</small></div></div>
+      <div class="chat-log" id="chatLog">
+        {% if history %}
+          {% for item in history %}
+            <div class="user-bubble">{{ item.question }}</div>
+            <div class="bot-bubble">{{ item.answer }}</div>
+          {% endfor %}
+        {% else %}
+          <div class="bot-bubble">Hi! I’m connected to the SmartShop catalogue. Ask me about a product or category we actually sell. If you ask for something outside the catalogue, I’ll tell you honestly that it isn’t available.</div>
+        {% endif %}
+      </div>
+      <form class="chat-form" id="supportForm"><input id="supportInput" autocomplete="off" placeholder="Tell me what you need..."><button type="submit">Ask AI</button></form>
+    </div>
+    {% if session.get('user_id') %}
+    <div style="text-align:center;margin-top:20px;">
+      <form method="post" action="{{ url_for('clear_chat_history') }}" onsubmit="return confirm('Clear your saved chat history?');">
+        <button type="submit" class="btn-secondary">Clear Chat History</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function(){
+  const input=document.getElementById('advisorInput');
+  const button=document.getElementById('advisorBtn');
+  const result=document.getElementById('advisorResult');
+  const answer=document.getElementById('advisorAnswer');
+  const products=document.getElementById('advisorProducts');
+
+  function render(data){
+    result.classList.add('show');
+    result.classList.toggle('refusal', !!data.catalogue_refusal || !!data.budget_miss);
+    answer.textContent=data.answer||'I could not find a match yet.';
+    products.innerHTML='';
+    (data.products||[]).forEach((p,i)=>{
+      const card=document.createElement('div');
+      card.className='ai-product-mini';
+      card.innerHTML='<span class="kicker">'+(i===0?'BEST MATCH':'ALTERNATIVE')+'</span>'+
+        '<h3></h3><p>$'+Number(p.price||0).toFixed(2)+'</p>'+
+        '<p>Rating: '+Number(p.rating||0).toFixed(1)+' ★</p>'+
+        '<p>Stock: '+Number(p.stock||0)+'</p>'+
+        '<div class="ai-score">AI score: '+Number(p.score||0)+'/100</div>';
+      card.querySelector('h3').textContent=p.name;
+      products.appendChild(card);
+    });
+    result.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  async function ask(){
+    const q=input.value.trim();
+    if(!q)return;
+    button.disabled=true; button.textContent='Analyzing catalogue...';
+    try{
+      const r=await fetch('{{ url_for("ai_advisor_api") }}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+      if(!r.ok)throw new Error('Request failed');
+      render(await r.json());
+    }catch(e){
+      answer.textContent='The AI advisor could not connect. Please try again.';
+      products.innerHTML='';
+      result.classList.add('show');
+    }finally{
+      button.disabled=false; button.textContent='✨ Find My Match';
+    }
+  }
+  button.addEventListener('click',ask);
+  input.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')ask();});
+  document.querySelectorAll('[data-advisor]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.advisor;input.focus();}));
+})();
+</script>
+{% endblock %}

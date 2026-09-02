@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard — Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">SMART SHOP AI · ADMIN</span><h1>Admin Dashboard</h1><p>Manage the catalogue, orders, customers and Smart Shop AI business data from one place.</p></div></section>
+<section class="section"><div class="shell">
+<div class="admin-grid">
+{% for label,value in [('Products',summary.total_products),('Customers',summary.total_users),('Orders',summary.total_orders),('Stock Units',summary.total_stock),('Sales Units',summary.total_sales),('Order Revenue','$%.2f'|format(summary.order_revenue)),('Inventory Value','$%.2f'|format(summary.inventory_value)),('Avg Rating','%.1f/5'|format(summary.average_rating))] %}<div class="stat-card"><span>{{ label }}</span><strong>{{ value }}</strong></div>{% endfor %}
+</div>
+<div class="admin-actions"><a class="btn btn-primary" href="{{ url_for('admin_products') }}">Manage Products</a><a class="btn btn-secondary" href="{{ url_for('admin_orders') }}">Manage Orders</a><a class="btn btn-secondary" href="{{ url_for('admin_users') }}">Manage Users</a></div>
+<div class="admin-panels"><div class="panel"><div class="panel-head"><h2>Recent Orders</h2><a href="{{ url_for('admin_orders') }}">View all</a></div>{% if recent_orders %}<div class="table-wrap"><table><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th></tr>{% for o in recent_orders %}<tr><td><a href="{{ url_for('admin_order_detail', order_id=o.order_id) }}">#{{ o.order_id }}</a></td><td>{{ o.username }}</td><td>${{ '%.2f'|format(o.total_amount) }}</td><td><span class="status-pill">{{ o.status }}</span></td></tr>{% endfor %}</table></div>{% else %}<p>No orders yet.</p>{% endif %}</div>
+<div class="panel"><div class="panel-head"><h2>Low Stock</h2><a href="{{ url_for('admin_products') }}">Manage</a></div>{% if low_stock %}<div class="table-wrap"><table><tr><th>Product</th><th>Stock</th><th>Sales</th></tr>{% for p in low_stock %}<tr><td>{{ p.name }}</td><td>{{ p.stock }}</td><td>{{ p.sales }}</td></tr>{% endfor %}</table></div>{% else %}<p>Inventory is healthy.</p>{% endif %}</div></div>
+</div></section>
+{% endblock %}

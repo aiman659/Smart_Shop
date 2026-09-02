@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Admin Setup — Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">SMART SHOP AI</span><h1>Administrator Setup</h1><p>Create the first administrator account for this Smart Shop AI installation.</p></div></section>
+<section class="section"><div class="shell narrow"><div class="form-card">
+<form method="post">
+<label>Admin Username<input name="username" minlength="3" required></label>
+<label>Password<input type="password" name="password" minlength="6" required></label>
+<label>Confirm Password<input type="password" name="confirm_password" minlength="6" required></label>
+<button class="btn btn-primary" type="submit">Create Admin Account</button>
+</form></div></div></section>
+{% endblock %}

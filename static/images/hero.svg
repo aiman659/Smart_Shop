@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="760" viewBox="0 0 1100 760">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0f172a"/><stop offset=".55" stop-color="#312e81"/><stop offset="1" stop-color="#be185d"/></linearGradient>
+ <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="22" stdDeviation="24" flood-opacity=".30"/></filter>
+</defs>
+<rect width="1100" height="760" rx="48" fill="url(#bg)"/>
+<circle cx="120" cy="120" r="130" fill="#22d3ee" opacity=".12"/><circle cx="970" cy="650" r="190" fill="#f472b6" opacity=".12"/>
+<rect x="95" y="92" width="910" height="575" rx="42" fill="#ffffff" opacity=".08" stroke="#ffffff" stroke-opacity=".18"/>
+<rect x="155" y="150" width="790" height="455" rx="34" fill="#020617" opacity=".38"/>
+<g transform="translate(125 205)"><rect width="250" height="108" rx="24" fill="#ffffff" opacity=".96"/><circle cx="48" cy="54" r="28" fill="#dbeafe"/><text x="48" y="65" text-anchor="middle" font-size="30">👟</text><text x="88" y="48" font-family="Arial" font-size="18" font-weight="700" fill="#111827">Fresh arrivals</text><text x="88" y="73" font-family="Arial" font-size="15" fill="#64748b">Smart style picks</text></g>
+<g transform="translate(725 430)"><rect width="220" height="108" rx="24" fill="#ffffff" opacity=".96"/><circle cx="48" cy="54" r="28" fill="#fce7f3"/><text x="48" y="65" text-anchor="middle" font-size="30">🛍️</text><text x="88" y="48" font-family="Arial" font-size="18" font-weight="700" fill="#111827">Easy shopping</text><text x="88" y="73" font-family="Arial" font-size="15" fill="#64748b">Fast catalogue</text></g>
+<g transform="translate(370 175)">
+ <path d="M80 85 L160 35 L240 85 L305 145 L270 205 L240 175 L240 355 L80 355 L80 175 L50 205 L15 145 Z" fill="url(#shirt)" stroke="#fff" stroke-opacity=".45" stroke-width="4"/>
+ <path d="M160 35 L145 115 L175 145 L205 115 L190 35" fill="#fff" opacity=".22"/>
+ <path d="M90 165 Q160 205 230 165" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="4"/>
+</g>
+<text x="550" y="555" text-anchor="middle" font-family="Arial" font-size="30" font-weight="800" fill="#fff">SMART SHOP AI</text>
+<text x="550" y="590" text-anchor="middle" font-family="Arial" font-size="17" fill="#cbd5e1">Colorful catalogue • intelligent insights • effortless shopping</text>
+</svg>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Checkout | Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">CHECKOUT</span><h1>Complete Your Order</h1><p>Enter delivery details and choose a demo-safe payment method.</p></div></section>
+<section class="section compact-top"><div class="shell">
+<div class="cart-layout">
+<div class="cart-list">
+<form method="POST" class="manage-form">
+<h2>Delivery Details</h2>
+<label>Full name<input type="text" name="shipping_name" required maxlength="100" value="{{ session.get('username','') }}"></label>
+<label>Phone number<input type="tel" name="shipping_phone" required maxlength="30" placeholder="03XXXXXXXXX"></label>
+<label>Delivery address<textarea name="shipping_address" required rows="4" maxlength="300" placeholder="House, street, city"></textarea></label>
+<h2>Payment</h2>
+<label><input type="radio" name="payment_method" value="Cash on Delivery" checked> Cash on Delivery</label>
+<label><input type="radio" name="payment_method" value="Demo Card Payment"> Demo Card Payment <small>(no real charge)</small></label>
+<button class="btn btn-primary" type="submit">Place Order</button>
+</form>
+</div>
+<aside class="order-summary"><span class="kicker">ORDER SUMMARY</span><h2>Your Items</h2>
+{% for item in items %}{% set p=item.product %}<div><span>{{ p.name }} × {{ item.quantity }}</span><b>${{ '%.2f'|format(p.price*item.quantity) }}</b></div>{% endfor %}
+<div><span>Shipping</span><b>Free</b></div><div class="summary-total"><span>Total</span><b>${{ '%.2f'|format(subtotal) }}</b></div>
+<p>Demo checkout only. No real payment gateway is connected.</p><a href="{{ url_for('cart') }}">&larr; Back to cart</a></aside>
+</div></div></section>
+{% endblock %}

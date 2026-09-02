@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}My Orders | Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">ORDER HISTORY</span><h1>My Orders</h1><p>View your placed orders and their current demo status.</p></div></section>
+<section class="section compact-top"><div class="shell">
+{% if orders %}
+<div class="cart-list">
+{% for order in orders %}
+<article class="cart-row">
+<div class="cart-copy"><span class="category-tag">Order #{{ order.order_id }}</span><h3><a href="{{ url_for('order_detail', order_id=order.order_id) }}">Order placed {{ order.created_at }}</a></h3><p>Status: <strong>{{ order.status }}</strong> · Payment: {{ order.payment_status }}</p></div>
+<div class="line-total"><small>Total</small><b>${{ '%.2f'|format(order.total_amount) }}</b><a class="update-link" href="{{ url_for('order_detail', order_id=order.order_id) }}">View details</a></div>
+</article>
+{% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><div class="empty-symbol">0</div><h2>No orders yet</h2><p>Your completed orders will appear here.</p><a class="btn btn-primary" href="{{ url_for('products') }}">Start shopping</a></div>
+{% endif %}
+</div></section>
+{% endblock %}

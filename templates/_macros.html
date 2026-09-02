@@ -1,0 +1,17 @@
+{% macro product_card(product) %}
+<article class="product-card reveal">
+  <a class="product-media" href="{{ url_for('product_detail', product_id=product.product_id) }}">
+    <img src="{{ url_for('static', filename='images/' + (product.image or 'product_1.svg')) }}" alt="{{ product.name }}" loading="lazy">
+    <span class="product-badge {% if product.stock <= 12 %}badge-danger{% endif %}">{% if product.stock <= 0 %}Out of stock{% elif product.stock <= 12 %}Low stock{% else %}In stock{% endif %}</span>
+    <span class="discount-badge">-15%</span>
+  </a>
+  <div class="product-copy">
+    <div class="product-topline"><span class="category-tag">{{ product.category }}</span><a class="heart {% if product.product_id in wishlist_ids %}saved{% endif %}" href="{{ url_for('toggle_wishlist', product_id=product.product_id) }}" aria-label="Toggle wishlist">&#9825;</a></div>
+    <h3><a href="{{ url_for('product_detail', product_id=product.product_id) }}">{{ product.name }}</a></h3>
+    <p class="brand-line">{{ product.brand }}</p>
+    <div class="rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><b>{{ '%.1f'|format(product.rating) }}</b><span>({{ product.sales }} sold)</span></div>
+    <div class="price-row"><strong>${{ '%.2f'|format(product.price) }}</strong><del>${{ '%.2f'|format(product.price * 1.18) }}</del><span class="ai-pill">AI {{ ai_score(product) }}</span></div>
+    <div class="card-actions"><a class="btn btn-soft" href="{{ url_for('product_detail', product_id=product.product_id) }}">View details</a><a class="btn btn-primary" href="{{ url_for('add_to_cart', product_id=product.product_id) }}">Add to cart</a></div>
+  </div>
+</article>
+{% endmacro %}

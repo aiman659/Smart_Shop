@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users — Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">ADMIN · USERS</span><h1>Manage Users</h1><p>Control customer and administrator roles for this Smart Shop AI installation.</p></div></section>
+<section class="section"><div class="shell"><div class="panel"><div class="table-wrap"><table><tr><th>User</th><th>Role</th><th>Created</th><th>Access</th></tr>{% for u in users %}<tr><td>{{ u.username }}</td><td><span class="status-pill">{{ u.role }}</span></td><td>{{ u.created_at }}</td><td><form method="post" action="{{ url_for('admin_update_user_role', user_id=u.user_id) }}"><select name="role"><option value="customer" {% if u.role=='customer' %}selected{% endif %}>Customer</option><option value="admin" {% if u.role=='admin' %}selected{% endif %}>Admin</option></select><button class="btn btn-secondary" type="submit">Save</button></form></td></tr>{% endfor %}</table></div></div></div></section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Manage Orders — Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">ADMIN · SALES</span><h1>Manage Orders</h1><p>Review customer orders and update their Smart Shop AI status.</p></div></section>
+<section class="section"><div class="shell"><div class="admin-toolbar"><form method="get"><select name="status"><option>All</option>{% for s in statuses %}<option {% if selected_status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select><button class="btn btn-secondary">Filter</button></form></div>
+<div class="panel"><div class="table-wrap"><table><tr><th>Order</th><th>Customer</th><th>Date</th><th>Total</th><th>Payment</th><th>Status</th><th></th></tr>{% for o in orders %}<tr><td>#{{ o.order_id }}</td><td>{{ o.username }}</td><td>{{ o.created_at }}</td><td>${{ '%.2f'|format(o.total_amount) }}</td><td>{{ o.payment_method }}</td><td><span class="status-pill">{{ o.status }}</span></td><td><a href="{{ url_for('admin_order_detail', order_id=o.order_id) }}">Open</a></td></tr>{% endfor %}</table></div></div></div></section>
+{% endblock %}

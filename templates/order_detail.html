@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.order_id }} | Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">ORDER DETAILS</span><h1>Order #{{ order.order_id }}</h1><p>Status: {{ order.status }}</p></div></section>
+<section class="section compact-top"><div class="shell"><div class="cart-layout"><div class="cart-list">
+{% for item in items %}
+<article class="cart-row"><div class="cart-copy"><span class="category-tag">Item</span><h3>{{ item.product_name }}</h3><p>Quantity: {{ item.quantity }} · Unit price: ${{ '%.2f'|format(item.price) }}</p></div><div class="line-total"><small>Total</small><b>${{ '%.2f'|format(item.line_total) }}</b></div></article>
+{% endfor %}
+</div><aside class="order-summary"><span class="kicker">ORDER SUMMARY</span><h2>Delivery & Payment</h2><div><span>Name</span><b>{{ order.shipping_name }}</b></div><div><span>Phone</span><b>{{ order.shipping_phone }}</b></div><div><span>Address</span><b>{{ order.shipping_address }}</b></div><div><span>Payment</span><b>{{ order.payment_method }}</b></div><div><span>Payment status</span><b>{{ order.payment_status }}</b></div><div class="summary-total"><span>Total</span><b>${{ '%.2f'|format(order.total_amount) }}</b></div><a href="{{ url_for('orders') }}">&larr; My orders</a></aside></div>
+<div class="section" style="padding-top:28px"><div class="cart-layout"><div class="cart-list">
+<h2>Live Order Timeline</h2>
+{% for event in tracking %}<article class="cart-row"><div class="cart-copy"><span class="category-tag">{{ event.status }}</span><h3>{{ event.note or event.status }}</h3><p>{{ event.created_at }}</p></div></article>{% endfor %}
+</div><aside class="order-summary"><span class="kicker">RETURNS</span><h2>Return Request</h2>
+{% if return_request %}<p><b>Status:</b> {{ return_request.status }}</p><p>{{ return_request.reason }}</p>{% else %}<p>Eligible after delivery. Tell us why you want to return this order.</p>{% if order.status == 'Delivered' %}<form method="POST" action="{{ url_for('request_return', order_id=order.order_id) }}" class="manage-form"><textarea name="reason" required maxlength="500" rows="4" placeholder="Reason for return"></textarea><button class="btn btn-primary" type="submit">Request Return</button></form>{% endif %}{% endif %}
+<a href="{{ url_for('returns') }}">View my returns</a></aside></div></div></section>
+{% endblock %}

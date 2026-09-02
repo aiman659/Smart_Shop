@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}AI Picks | Smart Shop AI{% endblock %}
+{% block content %}
+<section class="ai-hero">
+  <div class="shell">
+    <span class="kicker light-kicker">PERSONAL AI SHOPPING</span>
+    <h1>Recommendations that learn your shopping intent.</h1>
+    <p>{{ intro }}</p>
+    <div class="score-legend"><span>Intent match</span><span>Past activity</span><span>Quality</span><span>Popularity</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div><span class="kicker">MADE FOR YOU</span><h2>Personalized AI Picks</h2><p>Recommendations are calculated only from Smart Shop AI's real catalogue and your available shopping signals.</p></div>
+    </div>
+    {% if personalized %}
+    <div class="ai-grid">
+      {% for item in personalized %}{% set p=item.product %}
+      <article class="ai-card reveal">
+        <div class="ai-media"><img src="{{ url_for('static', filename='images/' + (p.image or 'product_1.svg')) }}" alt="{{ p.name }}"><span class="rank-badge">#{{ loop.index }}</span><span class="ai-score-ring">{{ item.score }}</span></div>
+        <div class="ai-body"><span class="category-tag">{{ p.category }}</span><h3>{{ p.name }}</h3><p class="brand-line">{{ p.brand }} · ${{ '%.2f'|format(p.price) }}</p>
+          <div class="signal-row"><span>{{ p.sales }} sales</span><span>{{ '%.1f'|format(p.rating) }} rating</span><span>{{ p.stock }} in stock</span></div>
+          <div class="score-line"><span>Personal Match</span><b>{{ item.score }}/100</b></div><div class="bar-track"><i style="width:{{ item.score }}%"></i></div>
+          <p class="ai-reason"><b>Why this pick:</b> {{ item.reason }}</p>
+          <div class="card-actions"><a class="btn btn-soft" href="{{ url_for('product_detail', product_id=p.product_id) }}">View product</a><a class="btn btn-primary" href="{{ url_for('add_to_cart', product_id=p.product_id) }}">Add to cart</a></div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}<div class="empty-state"><h3>Build your first shopping signal</h3><p>Browse products, add something to your wishlist/cart, place an order, or tell the AI Shopping Advisor what you want. Smart Shop AI will then use those real signals to personalize your picks.</p><a class="btn btn-primary" href="{{ url_for('products') }}">Explore catalogue</a></div>{% endif %}
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="shell">
+    <div class="section-head"><div><span class="kicker">SMART DISCOVERY</span><h2>Always useful, even for new shoppers</h2><p>These sections use catalogue-wide signals, so every customer still gets meaningful discovery.</p></div></div>
+    <div class="ai-grid">
+      {% for item in trending %}{% set p=item.product %}
+      <article class="ai-card reveal"><div class="ai-media"><img src="{{ url_for('static', filename='images/' + (p.image or 'product_1.svg')) }}" alt="{{ p.name }}"><span class="rank-badge">TRENDING</span></div><div class="ai-body"><span class="category-tag">{{ p.category }}</span><h3>{{ p.name }}</h3><p class="brand-line">{{ p.brand }} · ${{ '%.2f'|format(p.price) }}</p><div class="signal-row"><span>{{ p.sales }} sales</span><span>{{ '%.1f'|format(p.rating) }} rating</span><span>{{ p.stock }} stock</span></div><p class="ai-reason"><b>AI signal:</b> Strong catalogue demand with good customer rating and available stock.</p><div class="card-actions"><a class="btn btn-soft" href="{{ url_for('product_detail', product_id=p.product_id) }}">View product</a><a class="btn btn-primary" href="{{ url_for('add_to_cart', product_id=p.product_id) }}">Add to cart</a></div></div></article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

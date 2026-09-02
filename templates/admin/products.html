@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Manage Products — Smart Shop AI{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><span class="kicker light-kicker">ADMIN · CATALOGUE</span><h1>Manage Products</h1><p>Only administrators can add, edit or remove catalogue products.</p></div></section>
+<section class="section"><div class="shell">
+<div class="admin-toolbar"><form method="get"><input name="search" value="{{ keyword }}" placeholder="Search products..."><select name="category"><option>All</option>{% for c in categories %}<option {% if selected_category==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</select><button class="btn btn-secondary">Filter</button></form><a class="btn btn-primary" href="{{ url_for('add_product') }}">+ Add Product</a></div>
+<div class="panel"><div class="table-wrap"><table><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Rating</th><th>Sales</th><th>Actions</th></tr>{% for p in products %}<tr><td><a href="{{ url_for('product_detail', product_id=p.product_id) }}">{{ p.name }}</a></td><td>{{ p.category }}</td><td>${{ '%.2f'|format(p.price) }}</td><td>{{ p.stock }}</td><td>{{ p.rating }}</td><td>{{ p.sales }}</td><td class="table-actions"><a href="{{ url_for('edit_product', product_id=p.product_id) }}">Edit</a><form method="post" action="{{ url_for('delete_product', product_id=p.product_id) }}" onsubmit="return confirm('Delete this product from Smart Shop AI?');"><button type="submit">Delete</button></form></td></tr>{% endfor %}</table></div></div>
+</div></section>
+{% endblock %}
